@@ -1,4 +1,3 @@
-import axios from "axios";
 import { User } from "../types/User";
 
 interface ApiResponse {
@@ -27,39 +26,6 @@ export async function obtenerUsuarios(): Promise<User[]> {
   }
 }
 
-//---------------------------------------------------------------- VERIFICATE MAIL -  VERIFICATE CODE => USER
-
-export const enviarVerificacionEmail = async (email: string) => {
-  try {
-    const response = await fetch(`${API_URL}/mailValidation?email=${email}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("API: Error al enviar la verificación de email");
-    }
-    return response;
-  } catch (error) {
-    console.error("API: Error al enviar la verificación de email", error);
-    throw error;
-  }
-};
-
-export const verificarCodigo = async (Email: string, Code: string) => {
-  try {
-    const response = await axios.post(`${API_URL}/user/validate`, {
-      Email,
-      Code,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("API: Error al verificar el código", error);
-    throw error;
-  }
-};
 
 //---------------------------------------------------------------- POST USER
 export async function crearUsuario(
@@ -102,31 +68,11 @@ export async function actualizarUsuario(usuario: Partial<User>): Promise<void> {
   }
 }
 
-//---------------------------------------------------------------- GET USER ID
-export async function obtenerUsuarioPorId(
-  usuarioId: number
-): Promise<User | null> {
-  try {
-    const url = `${API_URL}/user/${usuarioId}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("API: Error al obtener el usuario por ID");
-    }
-    const responseData: ApiResponse = await response.json();
-    if (!responseData.success) {
-      throw new Error(`API: ${responseData.msg}`);
-    }
-    return responseData.data[0] || null;
-  } catch (error) {
-    console.error("API: Error al obtener el usuario por ID", error);
-    return null;
-  }
-}
 
 //---------------------------------------------------------------- DELETE USER
 export async function eliminarUsuario(usuarioId: number): Promise<void> {
   try {
-    const url = `${API_URL}/user/${usuarioId}`;
+    const url = `${API_URL}/user/Delete/${usuarioId}`;
     const response = await fetch(url, {
       method: "DELETE",
     });
@@ -139,33 +85,3 @@ export async function eliminarUsuario(usuarioId: number): Promise<void> {
   }
 }
 
-//---------------------------------------------------------------- BLOCK USER
-export async function bloquearUsuario(id: number) {
-  try {
-    const response = await fetch(`${API_URL}/user/blockUser/${id}`, {
-      method: "PUT",
-    });
-    if (!response.ok) {
-      throw new Error("API: Error al bloquear el usuario");
-    }
-    return response.json();
-  } catch (error) {
-    console.error("API: Error al bloquear el usuario", error);
-    throw new Error("API: Hubo un error al bloquear el usuario");
-  }
-}
-
-//---------------------------------------------------------------- UNLOCK USER
-export async function desbloquearUsuario(id: number) {
-  try {
-    const response = await fetch(`${API_URL}/user/unLockUser/${id}`, {
-      method: "PUT",
-    });
-    if (!response.ok) {
-      throw new Error("API: Error al desbloquear el usuario");
-    }
-    return response.json();
-  } catch (error) {
-    throw new Error("API: Hubo un error al desbloquear el usuario");
-  }
-}

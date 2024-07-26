@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { User } from "../../../types/User";
 import { obtenerUsuarios, eliminarUsuario } from "../../../services/Usuario";
 
-export function Users() {
+export function Clients() {
   const [usuarios, setUsuarios] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usuariosPorPagina] = useState(9);
@@ -32,7 +32,7 @@ export function Users() {
     const fetchData = async () => {
       try {
         let data = await obtenerUsuarios();
-        data = data.filter((usuario: User) => usuario.Rol == 0);
+        data = data.filter((usuario: User) => usuario.Rol == 1);
         setUsuarios(data);
       } catch (error) {
         console.error("Error al obtener usuarios:", error);

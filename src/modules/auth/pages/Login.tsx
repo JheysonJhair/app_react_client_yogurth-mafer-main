@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { login } from "../../../services/Login";
@@ -9,6 +9,13 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   //---------------------------------------------------------------- POST LOGIN
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,7 +32,10 @@ export default function Login() {
           icon: "error",
           confirmButtonText: "Aceptar",
         });
+
       } else {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("isAuthenticated", "true");
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -33,7 +43,6 @@ export default function Login() {
           showConfirmButton: false,
           timer: 1500,
         });
-
         navigate("/");
       }
     } catch (error) {

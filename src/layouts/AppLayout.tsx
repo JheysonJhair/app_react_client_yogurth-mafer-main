@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 
 function AppLayout() {
+  const navigate = useNavigate();
   //---------------------------------------------------------------- SCRIPTS
   useEffect(() => {
     const scriptPaths = [
@@ -37,6 +38,14 @@ function AppLayout() {
 
     loadScripts();
   }, []);
+
+  //---------------------------------------------------------------- HANDLE LOGOUT
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("isAuthenticated");
+    navigate("/login");
+  };
+
   return (
     <>
       <div className="main-wrapper">
@@ -83,7 +92,7 @@ function AppLayout() {
                       </NavLink>
                     </li>
                     <li className="nav-item">
-                      <NavLink to="/new-clients" className="nav-link">
+                      <NavLink to="/clients" className="nav-link">
                         Clientes
                       </NavLink>
                     </li>
@@ -199,13 +208,13 @@ function AppLayout() {
                   >
                     <div className="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
                       <p>6 New Notifications</p>
-                      <a href="javascript:;" className="text-muted">
+                      <a href="" className="text-muted">
                         Clear all
                       </a>
                     </div>
                     <div className="p-1">
                       <a
-                        href="javascript:;"
+                        href=""
                         className="dropdown-item d-flex align-items-center py-2"
                       >
                         <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
@@ -220,7 +229,7 @@ function AppLayout() {
                         </div>
                       </a>
                       <a
-                        href="javascript:;"
+                        href=""
                         className="dropdown-item d-flex align-items-center py-2"
                       >
                         <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
@@ -235,7 +244,7 @@ function AppLayout() {
                         </div>
                       </a>
                       <a
-                        href="javascript:;"
+                        href=""
                         className="dropdown-item d-flex align-items-center py-2"
                       >
                         <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
@@ -251,7 +260,7 @@ function AppLayout() {
                         </div>
                       </a>
                       <a
-                        href="javascript:;"
+                        href=""
                         className="dropdown-item d-flex align-items-center py-2"
                       >
                         <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
@@ -266,7 +275,7 @@ function AppLayout() {
                         </div>
                       </a>
                       <a
-                        href="javascript:;"
+                        href=""
                         className="dropdown-item d-flex align-items-center py-2"
                       >
                         <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
@@ -282,7 +291,7 @@ function AppLayout() {
                       </a>
                     </div>
                     <div className="px-3 py-2 d-flex align-items-center justify-content-center border-top">
-                      <a href="javascript:;">View all</a>
+                      <a href="">View all</a>
                     </div>
                   </div>
                 </li>
@@ -306,20 +315,6 @@ function AppLayout() {
                     className="dropdown-menu p-0"
                     aria-labelledby="profileDropdown"
                   >
-                    <div className="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                      <div className="mb-3">
-                        <img
-                          className="wd-80 ht-80 rounded-circle"
-                          src="https://via.placeholder.com/80x80"
-                        />
-                      </div>
-                      <div className="text-center">
-                        <p className="tx-16 fw-bolder">Amiah Burton</p>
-                        <p className="tx-12 text-muted">
-                          amiahburton@gmail.com
-                        </p>
-                      </div>
-                    </div>
                     <ul className="list-unstyled p-1">
                       <li className="dropdown-item py-2">
                         <a
@@ -327,25 +322,17 @@ function AppLayout() {
                           className="text-body ms-0"
                         >
                           <i className="me-2 icon-md" data-feather="user" />
-                          <span>Profile</span>
+                          <span>Perfil</span>
                         </a>
                       </li>
                       <li className="dropdown-item py-2">
-                        <a href="javascript:;" className="text-body ms-0">
-                          <i className="me-2 icon-md" data-feather="edit" />
-                          <span>Edit Profile</span>
-                        </a>
-                      </li>
-                      <li className="dropdown-item py-2">
-                        <a href="javascript:;" className="text-body ms-0">
-                          <i className="me-2 icon-md" data-feather="repeat" />
-                          <span>Switch User</span>
-                        </a>
-                      </li>
-                      <li className="dropdown-item py-2">
-                        <a href="javascript:;" className="text-body ms-0">
+                        <a
+                          onClick={handleLogout}
+                          href=""
+                          className="text-body ms-0"
+                        >
                           <i className="me-2 icon-md" data-feather="log-out" />
-                          <span>Log Out</span>
+                          <span>Salir</span>
                         </a>
                       </li>
                     </ul>
