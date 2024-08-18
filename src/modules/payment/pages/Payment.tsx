@@ -92,7 +92,7 @@ const Payment: React.FC = () => {
                   <th>Fecha</th>
                   <th>Método de compra</th>
                   <th>Método de pago</th>
-                  <th>Numero de tarjeta</th>
+
                   <th>Monto</th>
                   <th>Voucher</th>
                   <th>Estado</th>
@@ -106,7 +106,7 @@ const Payment: React.FC = () => {
                       {payment.ShippingMethod ? "Recojo en tienda" : "Envio"}
                     </td>
                     <td>{payment.PaymentMethod ? "Izipay" : "Yape"}</td>
-                    <td>{payment.CardNumber}</td>
+
                     <td>S/ {payment.Total} </td>
                     <td className="text-center">
                       {payment.ImagePayment && (
