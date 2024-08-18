@@ -9,6 +9,7 @@ import { Clients } from "../modules/client/pages/Clients";
 import { NewClient } from "../modules/client/pages/NewClient";
 import Products from "../modules/product/pages/Products";
 import NewProduct from "../modules/product/pages/NewProduct";
+import Payment from "../modules/payment/pages/Payment";
 
 const appRouter = [
   {
@@ -43,6 +44,10 @@ const appRouter = [
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/payment",
+        element: <Payment />,
       },
       {
         path: "/new-product",

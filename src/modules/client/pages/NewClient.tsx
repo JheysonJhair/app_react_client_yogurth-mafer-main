@@ -14,7 +14,7 @@ import { crearUsuario } from "../../../services/Usuario";
 export function NewClient() {
   const navigate = useNavigate();
   const [nuevoUsuario, setNuevoUsuario] = useState<Partial<User>>({
-    Rol: 1,
+    Rol: 0,
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -94,6 +94,7 @@ export function NewClient() {
       }
 
       let response: { msg: string; success: boolean };
+      console.log(nuevoUsuario)
       response = await crearUsuario(nuevoUsuario);
       if (response.success) {
         Swal.fire({
@@ -130,7 +131,7 @@ export function NewClient() {
             <a href="#">Usuario</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Crear nuevo usuario
+            Crear nuevo cliente
           </li>
         </ol>
       </nav>
@@ -139,7 +140,7 @@ export function NewClient() {
         <div className="col-md-12 stretch-card">
           <div className="card">
             <div className="card-body">
-              <h6 className="card-title">Registrar usuario</h6>
+              <h6 className="card-title">Registrar cliente</h6>
               <form>
                 <div className="row">
                   <div className="col-sm-4">

@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Swal from "sweetalert2";
 import { addProduct } from "../../../services/Product";
+import { form } from "../../../types/Product";
 
 const acceptTypes = {
   "image/*": [],
 };
 
-interface FormData {
-  name: string;
-  description: string;
-  nutritionalInfo: string;
-  category: string;
-  price: string;
-  stock: string;
-  image: File | null;
-}
-
 const NewProduct: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<form>({
     name: "",
     description: "",
     nutritionalInfo: "",
@@ -28,17 +19,15 @@ const NewProduct: React.FC = () => {
     image: null,
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {
-      name: "",
-      description: "",
-      nutritionalInfo: "",
-      category: "",
-      price: "",
-      stock: "",
-      image: "",
-    }
-  );
+  const [errors, setErrors] = useState<Partial<Record<keyof form, string>>>({
+    name: "",
+    description: "",
+    nutritionalInfo: "",
+    category: "",
+    price: "",
+    stock: "",
+    image: "",
+  });
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFormData({ ...formData, image: acceptedFiles[0] });
@@ -57,19 +46,20 @@ const NewProduct: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" }); 
+    setErrors({ ...errors, [name]: "" });
   };
 
+  //-------------------------------------------- VALIDATE FORM
   const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
+    const newErrors: Partial<Record<keyof form, string>> = {};
     let isValid = true;
 
     for (const key in formData) {
       if (
-        formData[key as keyof FormData] === "" ||
-        formData[key as keyof FormData] === null
+        formData[key as keyof form] === "" ||
+        formData[key as keyof form] === null
       ) {
-        newErrors[key as keyof FormData] = "Este campo es obligatorio";
+        newErrors[key as keyof form] = "Este campo es obligatorio";
         isValid = false;
       }
     }
@@ -83,6 +73,7 @@ const NewProduct: React.FC = () => {
     return isValid;
   };
 
+  //---------------------------------------------------------------- POST PRODUCT
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -100,7 +91,6 @@ const NewProduct: React.FC = () => {
     }
 
     try {
-      console.log(data);
       const response = await addProduct(data);
       if (response.success) {
         Swal.fire({
@@ -129,44 +119,12 @@ const NewProduct: React.FC = () => {
     } catch (error) {
       Swal.fire({
         title: "Error",
-        text: (error as Error).message,
+        text: "Opps, algo salio mal",
         icon: "error",
         confirmButtonText: "Aceptar",
       });
     }
   };
-
-  useEffect(() => {
-    const scriptPaths = [
-      "../assets/vendors/dropify/dist/dropify.min.js",
-      "../assets/js/dropify.js",
-    ];
-
-    const loadScript = (path: string) => {
-      return new Promise<void>((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = path;
-        script.async = true;
-        script.onload = () => resolve();
-        script.onerror = () =>
-          reject(new Error(`Failed to load script: ${path}`));
-        document.body.appendChild(script);
-      });
-    };
-
-    const loadScripts = async () => {
-      for (const scriptPath of scriptPaths) {
-        try {
-          await loadScript(scriptPath);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      console.log("All scripts loaded successfully.");
-    };
-
-    loadScripts();
-  }, []);
 
   return (
     <div className="page-content">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+
 import { Product } from "../../../types/Product";
 import {
   fetchProducts,
@@ -16,13 +17,21 @@ const Products: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
 
+  //---------------------------------------------------------------- GET PRODUCTS
   useEffect(() => {
     loadProducts();
   }, []);
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   useEffect(() => {
     if (currentProduct && currentProduct.UrlImage) {
-      setImagePreview(currentProduct.UrlImage); // Set initial image preview
+      setImagePreview(currentProduct.UrlImage);
     }
   }, [currentProduct]);
 
@@ -43,12 +52,8 @@ const Products: React.FC = () => {
     }
   };
 
-  const handleEdit = (product: Product) => {
-    setCurrentProduct(product);
-    setShowEditModal(true);
-  };
-
-  const handleDelete = async (productId: number) => {
+  //---------------------------------------------------------------- DELETE PRODUCT
+  const handleDelete = async (productId: any) => {
     try {
       const confirmacion = await Swal.fire({
         title: "¿Estás seguro?",
@@ -79,11 +84,13 @@ const Products: React.FC = () => {
 
   const handleCloseModal = () => setShowEditModal(false);
 
+  //---------------------------------------------------------------- UPDATE PRODUCT
   const handleSaveChanges = async () => {
     if (!currentProduct) return;
 
     try {
       const formData = new FormData();
+      formData.append("IdProduct", currentProduct.IdProduct);
       formData.append("Name", currentProduct.Name);
       formData.append("Description", currentProduct.Description);
       formData.append(
@@ -93,11 +100,21 @@ const Products: React.FC = () => {
       formData.append("Price", currentProduct.Price.toString());
       formData.append("Stock", currentProduct.Stock.toString());
 
+      let imageFile;
       if (file) {
-        formData.append("file", file);
+        imageFile = file;
+      } else if (currentProduct.UrlImage) {
+        const response = await fetch(currentProduct.UrlImage);
+        const blob = await response.blob();
+        const fileName = currentProduct.UrlImage.split("/").pop();
+        imageFile = new File([blob], fileName, { type: blob.type });
       }
-      const response = await updateProduct(formData);
 
+      if (imageFile) {
+        formData.append("file", imageFile);
+      }
+
+      const response = await updateProduct(formData);
       if (response.success) {
         Swal.fire("Éxito", response.msg, "success");
         loadProducts();
@@ -106,8 +123,15 @@ const Products: React.FC = () => {
         Swal.fire("Error", response.msg, "error");
       }
     } catch (error) {
-      Swal.fire("Error", "Oppss, algo salio mal!", "error");
+      Swal.fire("Error", "Oppss, algo salió mal!", "error");
     }
+  };
+
+  const handleEdit = (product: Product) => {
+    setCurrentProduct(product);
+    setFile(null);
+    setImagePreview(product.UrlImage);
+    setShowEditModal(true);
   };
 
   const handleChange = (

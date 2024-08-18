@@ -1,35 +1,40 @@
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-import { FaCalendarAlt } from 'react-icons/fa'; // Importa el ícono que desees
+import { FaCalendarAlt } from "react-icons/fa";
 
-import {
-  fetchClientCountsByDate,
-  fetchPaymentCounts,
-  getClientDue,
-} from "../services/Reports";
+import { fetchPaymentCounts, fetchSalesByDateRange } from "../services/Reports";
 
 export function HomePage() {
-  const [datosPayment, setDatosPayment] = useState<any>();
-  const [clientDueData, setClientDueData] = useState<any[]>([]);
-  const [clientCountsByMonth, setClientCountsByMonth] = useState<any[]>([]);
+  const [datosPayment, setDatosPayment] = useState<any>(null);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [salesData, setSalesData] = useState<any[]>([]);
 
-  //---------------------------------------------------------------- GET DATA
+  //----------------------------------- MONTH
+  useEffect(() => {
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDayOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      0
+    );
+
+    setStartDate(firstDayOfMonth.toISOString().split("T")[0]);
+    setEndDate(lastDayOfMonth.toISOString().split("T")[0]);
+  }, []);
+
+  //---------------------------------------------------------------- GET DATA PAYMENT
   useEffect(() => {
     const fetchData = async () => {
       try {
         const paymentCountResponse = await fetchPaymentCounts();
-
-        setDatosPayment(paymentCountResponse);
-        const clientDueResponse = await getClientDue();
-
-        if (clientDueResponse.success) {
-          setClientDueData(clientDueResponse.data);
+        if (paymentCountResponse) {
+          setDatosPayment(paymentCountResponse);
         }
-
-        const clientCountsResponse = await fetchClientCountsByDate();
-        if (clientCountsResponse) {
-          setClientCountsByMonth(clientCountsResponse);
+        if (startDate && endDate) {
+          await handleFilter();
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,14 +42,13 @@ export function HomePage() {
     };
 
     fetchData();
-  }, []);
+  }, [startDate, endDate]);
 
-  //---------------------------------------------------------------- GRAFIC
   const dataMultiLinea = {
     series: [
       {
         name: "Clientes",
-        data: clientCountsByMonth.map((item) => parseInt(item.count)),
+        data: datosPayment ? datosPayment.result : [],
       },
     ],
     options: {
@@ -52,8 +56,8 @@ export function HomePage() {
         type: "line",
       },
       xaxis: {
-        categories: clientCountsByMonth.map((item) => {
-          const [year, month] = item.month.split("-");
+        categories: salesData.map((item) => {
+          const [year, month] = item.SaleDate.split("-");
           const date = new Date(parseInt(year), parseInt(month) - 1, 1);
           return date.toLocaleString("default", { month: "long" });
         }),
@@ -62,6 +66,15 @@ export function HomePage() {
         position: "top",
       },
     } as ApexOptions,
+  };
+  //---------------------------------------------------------------- FILTER - POST SALES DATE RANGE
+  const handleFilter = async () => {
+    try {
+      const sales = await fetchSalesByDateRange(startDate, endDate);
+      setSalesData(sales);
+    } catch (error) {
+      console.error("Error fetching sales data:", error);
+    }
   };
 
   return (
@@ -82,10 +95,11 @@ export function HomePage() {
               <FaCalendarAlt className="text-danger" />
             </span>
             <input
-              type="text"
+              type="date"
               className="form-control bg-transparent border-danger"
               placeholder="Fecha inicio"
-              data-input
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
           <div
@@ -99,15 +113,17 @@ export function HomePage() {
               <FaCalendarAlt className="text-danger" />
             </span>
             <input
-              type="text"
+              type="date"
               className="form-control bg-transparent border-danger"
               placeholder="Fecha fin"
-              data-input
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
           <button
             type="button"
             className="btn btn-primary btn-icon-text mb-2 mb-md-0"
+            onClick={handleFilter}
           >
             <i className="btn-icon-prepend" data-feather="download-cloud" />
             Filtrar
@@ -126,7 +142,7 @@ export function HomePage() {
                   <div className="row">
                     <div className="col-6 col-md-12 col-xl-5">
                       <h3 className="mb-2">
-                        {datosPayment ? datosPayment.clientCount : "0"}
+                        {datosPayment ? datosPayment.numberProductsSold : "0"}
                       </h3>
                       <div className="d-flex align-items-baseline">
                         <p className="text-success">
@@ -151,7 +167,7 @@ export function HomePage() {
                   <div className="row">
                     <div className="col-6 col-md-12 col-xl-5">
                       <h3 className="mb-2">
-                        {datosPayment ? datosPayment.clientCount : "0"}
+                        {datosPayment ? datosPayment.numerUser : "0"}
                       </h3>
                       <div className="d-flex align-items-baseline">
                         <p className="text-success">
@@ -176,7 +192,7 @@ export function HomePage() {
                   <div className="row">
                     <div className="col-6 col-md-12 col-xl-5">
                       <h3 className="mb-2">
-                        {datosPayment ? datosPayment.clientCount : "0"}
+                        {datosPayment ? datosPayment.numberProducts : "0"}
                       </h3>
                       <div className="d-flex align-items-baseline">
                         <p className="text-success">
@@ -212,6 +228,55 @@ export function HomePage() {
                 type="line"
                 height={350}
               />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-4">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <h6 className="card-title">Ventas</h6>
+
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Nombre</th>
+
+                      <th>Apellido</th>
+                      <th>Tipo de pago</th>
+                      <th>Modalidad de compra</th>
+                      <th>Total</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {salesData.map((sale, index) => (
+                      <tr key={index}>
+                        <td>{sale.SaleDate}</td>
+                        <td>{sale.FirstName}</td>
+                        <td>{sale.LastName}</td>
+                        <td>
+                          {sale.ShippingMethod ? "Recojo en tienda" : "Envio"}
+                        </td>
+                        <td>{sale.PaymentMethod ? "Izipay" : "Yape"}</td>
+                        <td>{sale.Total}</td>
+                        <td
+                          className={
+                            sale.Process
+                              ? "text-success font-weight-bold"
+                              : "text-warning font-weight-bold"
+                          }
+                        >
+                          {sale.Process ? "Pagado" : "Proceso"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

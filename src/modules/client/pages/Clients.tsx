@@ -7,7 +7,7 @@ import {
   eliminarUsuario,
   actualizarUsuario,
 } from "../../../services/Usuario";
-import { Modal, Button, Form } from "react-bootstrap"; // Asegúrate de que react-bootstrap esté instalado
+import { Modal, Button, Form } from "react-bootstrap";
 
 export function Clients() {
   const [usuarios, setUsuarios] = useState<User[]>([]);
@@ -34,11 +34,12 @@ export function Clients() {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  //---------------------------------------------------------------- GET CLIENTS
   useEffect(() => {
     const fetchData = async () => {
       try {
         let data = await obtenerUsuarios();
-        data = data.filter((usuario: User) => usuario.Rol == 1);
+        data = data.filter((usuario: User) => usuario.Rol == 0);
         setUsuarios(data);
       } catch (error) {
         console.error("Error al obtener usuarios:", error);
@@ -46,7 +47,7 @@ export function Clients() {
     };
     fetchData();
   }, []);
-
+  //---------------------------------------------------------------- DELETE CLIENT
   const handleEliminarUsuario = async (id: number) => {
     try {
       const confirmacion = await Swal.fire({
@@ -91,12 +92,13 @@ export function Clients() {
     setEditUser({});
   };
 
+  //---------------------------------------------------------------- UPDATE CLIENT
   const handleUpdateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await actualizarUsuario({
         ...editUser,
-        Rol: 1,
+        Rol: 0,
       });
       if (response.success) {
         setUsuarios(
@@ -122,7 +124,7 @@ export function Clients() {
             <a href="#">Usuario</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Usuarios
+            Clientes
           </li>
         </ol>
       </nav>
@@ -131,7 +133,7 @@ export function Clients() {
         <input
           type="text"
           className="form-control"
-          placeholder="Buscar usuario..."
+          placeholder="Buscar cliente..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

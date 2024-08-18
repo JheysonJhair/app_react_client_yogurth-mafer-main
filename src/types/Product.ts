@@ -9,3 +9,18 @@ export interface Product {
   Category: string;
   UrlImage?: any;
 }
+
+export interface form {
+  name: string;
+  description: string;
+  nutritionalInfo: string;
+  category: string;
+  price: string;
+  stock: string;
+  image: File | null;
+}
+
+export interface ApiResponse {
+  msg: string;
+  success: boolean;
+}

@@ -7,7 +7,7 @@ import {
   eliminarUsuario,
   actualizarUsuario,
 } from "../../../services/Usuario";
-import { Modal, Button, Form } from "react-bootstrap"; // Asegúrate de que react-bootstrap esté instalado
+import { Modal, Button, Form } from "react-bootstrap"; 
 
 export function Users() {
   const [usuarios, setUsuarios] = useState<User[]>([]);
@@ -38,7 +38,7 @@ export function Users() {
     const fetchData = async () => {
       try {
         let data = await obtenerUsuarios();
-        data = data.filter((usuario: User) => usuario.Rol == 0);
+        data = data.filter((usuario: User) => usuario.Rol == 1);
         setUsuarios(data);
       } catch (error) {
         console.error("Error al obtener usuarios:", error);
@@ -96,7 +96,7 @@ export function Users() {
     try {
       const response = await actualizarUsuario({
         ...editUser,
-        Rol: 0,
+        Rol: 1,
       });
       if (response.success) {
         setUsuarios(
@@ -150,6 +150,7 @@ export function Users() {
               <th>Teléfono</th>
               <th>Dirección</th>
               <th>Email</th>
+              <th>Cumpleaños</th>
               <th>Contraseña</th>
               <th>Acciones</th>
             </tr>
@@ -163,6 +164,7 @@ export function Users() {
                   <td>{usuario.Phone}</td>
                   <td>{usuario.Address}</td>
                   <td>{usuario.Mail}</td>
+                  <td>{usuario.BirthDate}</td>
                   <td>{usuario.Password}</td>
                   <td>
                     <button
@@ -304,6 +306,18 @@ export function Users() {
                     value={editUser.Password || ""}
                     onChange={(e) =>
                       setEditUser({ ...editUser, Password: e.target.value })
+                    }
+                  />
+                </Form.Group>
+              </div>
+              <div className="col-md-6 mb-3">
+                <Form.Group controlId="formMail">
+                  <Form.Label>Cumpleaños</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={editUser.BirthDate || ""}
+                    onChange={(e) =>
+                      setEditUser({ ...editUser, BirthDate: e.target.value })
                     }
                   />
                 </Form.Group>

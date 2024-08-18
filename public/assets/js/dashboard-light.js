@@ -181,24 +181,6 @@ $(function() {
     "May 01 2022", "May 02 2022", "May 03 2022", "May 04 2022", "May 05 2022", "May 06 2022", "May 07 2022", "May 08 2022", "May 09 2022", "May 10 2022", "May 11 2022", "May 12 2022", "May 13 2022", "May 14 2022", "May 15 2022", "May 16 2022", "May 17 2022", "May 18 2022", "May 19 2022", "May 20 2022","May 21 2022", "May 22 2022", "May 23 2022", "May 24 2022", "May 25 2022", "May 26 2022", "May 27 2022", "May 28 2022", "May 29 2022", "May 30 2022",
   ]
   
-
-
-
-
-  // Date Picker
-  if($('#dashboardDate').length) {
-    flatpickr("#dashboardDate", {
-      wrap: true,
-      dateFormat: "d-M-Y",
-      defaultDate: "today",
-    });
-  }
-  // Date Picker - END
-
-
-
-
-
   // New Customers Chart
   if($('#customersChart').length) {
     var options1 = {

@@ -1,10 +1,4 @@
-import { User } from "../types/User";
-
-interface ApiResponse {
-  msg: string;
-  success: boolean;
-  data?: User[];
-}
+import { User, ApiResponse } from "../types/User";
 
 const API_URL = "https://bkmaferyogurt-production.up.railway.app/api";
 
@@ -41,7 +35,8 @@ export async function crearUsuario(
     if (!response.ok) {
       throw new Error("API: Error al crear el usuario");
     }
-    const responseData: { msg: string; success: boolean } = await response.json();
+    const responseData: { msg: string; success: boolean } =
+      await response.json();
     return responseData;
   } catch (error) {
     throw new Error(`API: Error al crear el usuario: ${error}`);
@@ -49,7 +44,9 @@ export async function crearUsuario(
 }
 
 //---------------------------------------------------------------- PUT USER
-export async function actualizarUsuario(usuario: Partial<User>): Promise<{ msg: string; success: boolean }> {
+export async function actualizarUsuario(
+  usuario: Partial<User>
+): Promise<{ msg: string; success: boolean }> {
   try {
     const url = `${API_URL}/user/update`;
     const response = await fetch(url, {
@@ -62,7 +59,8 @@ export async function actualizarUsuario(usuario: Partial<User>): Promise<{ msg: 
     if (!response.ok) {
       throw new Error("API: Error al actualizar el usuario");
     }
-    const responseData: { msg: string; success: boolean } = await response.json();
+    const responseData: { msg: string; success: boolean } =
+      await response.json();
     return responseData;
   } catch (error) {
     throw new Error(`API: Error al actualizar el usuario: ${error}`);
@@ -70,7 +68,9 @@ export async function actualizarUsuario(usuario: Partial<User>): Promise<{ msg: 
 }
 
 //---------------------------------------------------------------- DELETE USER
-export async function eliminarUsuario(usuarioId: number): Promise<{ msg: string; success: boolean }> {
+export async function eliminarUsuario(
+  usuarioId: number
+): Promise<{ msg: string; success: boolean }> {
   try {
     const url = `${API_URL}/user/Delete/${usuarioId}`;
     const response = await fetch(url, {
@@ -79,7 +79,8 @@ export async function eliminarUsuario(usuarioId: number): Promise<{ msg: string;
     if (!response.ok) {
       throw new Error("API: Error al eliminar el usuario");
     }
-    const responseData: { msg: string; success: boolean } = await response.json();
+    const responseData: { msg: string; success: boolean } =
+      await response.json();
     return responseData;
   } catch (error) {
     throw new Error(`API: Error al eliminar el usuario: ${error}`);

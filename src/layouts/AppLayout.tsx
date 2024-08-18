@@ -128,7 +128,7 @@ function AppLayout() {
 
               <li className="nav-item nav-category">Configuración</li>
               <li className="nav-item">
-                <NavLink to="/payments" className="nav-link">
+                <NavLink to="/payment" className="nav-link">
                   <i className="link-icon" data-feather="shopping-cart"></i>
                   <span className="link-title">Ventas</span>
                 </NavLink>
@@ -163,7 +163,7 @@ function AppLayout() {
               </li>
               <li className="nav-item">
                 <a
-                  href="https://jheysonjhairpro.ccontrolz.com/"
+                  href="https://jhedgost.com/"
                   target="_blank"
                   className="nav-link"
                 >
@@ -200,98 +200,6 @@ function AppLayout() {
                       <div className="circle" />
                     </div>
                   </a>
-                  <div
-                    className="dropdown-menu p-0"
-                    aria-labelledby="notificationDropdown"
-                  >
-                    <div className="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
-                      <p>6 New Notifications</p>
-                      <a href="" className="text-muted">
-                        Clear all
-                      </a>
-                    </div>
-                    <div className="p-1">
-                      <a
-                        href=""
-                        className="dropdown-item d-flex align-items-center py-2"
-                      >
-                        <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                          <i
-                            className="icon-sm text-white"
-                            data-feather="gift"
-                          />
-                        </div>
-                        <div className="flex-grow-1 me-2">
-                          <p>New Order Recieved</p>
-                          <p className="tx-12 text-muted">30 min ago</p>
-                        </div>
-                      </a>
-                      <a
-                        href=""
-                        className="dropdown-item d-flex align-items-center py-2"
-                      >
-                        <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                          <i
-                            className="icon-sm text-white"
-                            data-feather="alert-circle"
-                          />
-                        </div>
-                        <div className="flex-grow-1 me-2">
-                          <p>Server Limit Reached!</p>
-                          <p className="tx-12 text-muted">1 hrs ago</p>
-                        </div>
-                      </a>
-                      <a
-                        href=""
-                        className="dropdown-item d-flex align-items-center py-2"
-                      >
-                        <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                          <img
-                            className="wd-30 ht-30 rounded-circle"
-                            src="https://via.placeholder.com/30x30"
-                            alt="userr"
-                          />
-                        </div>
-                        <div className="flex-grow-1 me-2">
-                          <p>New customer registered</p>
-                          <p className="tx-12 text-muted">2 sec ago</p>
-                        </div>
-                      </a>
-                      <a
-                        href=""
-                        className="dropdown-item d-flex align-items-center py-2"
-                      >
-                        <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                          <i
-                            className="icon-sm text-white"
-                            data-feather="layers"
-                          />
-                        </div>
-                        <div className="flex-grow-1 me-2">
-                          <p>Apps are ready for update</p>
-                          <p className="tx-12 text-muted">5 hrs ago</p>
-                        </div>
-                      </a>
-                      <a
-                        href=""
-                        className="dropdown-item d-flex align-items-center py-2"
-                      >
-                        <div className="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                          <i
-                            className="icon-sm text-white"
-                            data-feather="download"
-                          />
-                        </div>
-                        <div className="flex-grow-1 me-2">
-                          <p>Download completed</p>
-                          <p className="tx-12 text-muted">6 hrs ago</p>
-                        </div>
-                      </a>
-                    </div>
-                    <div className="px-3 py-2 d-flex align-items-center justify-content-center border-top">
-                      <a href="">View all</a>
-                    </div>
-                  </div>
                 </li>
                 <li className="nav-item dropdown">
                   <a
@@ -345,7 +253,7 @@ function AppLayout() {
           <footer className="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
             <p className="text-muted mb-1 mb-md-0">
               Copyright © 2024{" "}
-              <a href="https://jheysonjhairpro.ccontrolz.com/" target="_blank">
+              <a href="https://jhedgost.com/" target="_blank">
                 YOGURT MAFER
               </a>
               .

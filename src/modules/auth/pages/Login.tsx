@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { login } from "../../../services/Login";
 
@@ -10,6 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  //---------------------------------------------------------------- VERIFYCATE
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
     if (isAuthenticated) {
@@ -25,15 +26,7 @@ export default function Login() {
         UserRequest: username,
         Password: password,
       });
-      if (!response.success) {
-        Swal.fire({
-          title: "Error!",
-          text: response.msg,
-          icon: "error",
-          confirmButtonText: "Aceptar",
-        });
-
-      } else {
+      if (response.success && response.data.Rol === 1) {
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("isAuthenticated", "true");
         Swal.fire({
@@ -44,6 +37,13 @@ export default function Login() {
           timer: 1500,
         });
         navigate("/");
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "No tiene acceso!",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
       }
     } catch (error) {
       Swal.fire({
@@ -125,23 +125,7 @@ export default function Login() {
                           >
                             Ingresar
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary btn-icon-text mb-2 mb-md-0"
-                          >
-                            <i
-                              className="btn-icon-prepend"
-                              data-feather="twitter"
-                            />
-                            Iniciar con Google
-                          </button>
                         </div>
-                        <NavLink
-                          to="/register"
-                          className="d-block mt-3 text-muted"
-                        >
-                          ¿No eres usuario? Regístrate
-                        </NavLink>
                       </form>
                     </div>
                   </div>

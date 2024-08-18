@@ -14,7 +14,7 @@ import { crearUsuario } from "../../../services/Usuario";
 export function NewUser() {
   const navigate = useNavigate();
   const [nuevoUsuario, setNuevoUsuario] = useState<Partial<User>>({
-    Rol: 0, // Rol por defecto
+    Rol: 1, 
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -25,6 +25,7 @@ export function NewUser() {
     Phone: "",
     Mail: "",
     Password: "",
+    BirthDate: "",
     Rol: "",
   });
 
@@ -76,6 +77,7 @@ export function NewUser() {
         "Phone",
         "Mail",
         "Password",
+        "BirthDate",
       ];
 
       const missingFields = requiredFields.filter(
@@ -92,6 +94,7 @@ export function NewUser() {
       }
 
       let response: { msg: string; success: boolean };
+      console.log(nuevoUsuario)
       response = await crearUsuario(nuevoUsuario);
       if (response.success) {
         Swal.fire({
@@ -240,7 +243,7 @@ export function NewUser() {
                       <input
                         type="date"
                         className="form-control"
-                        name="Birthday"
+                        name="BirthDate"
                         onChange={handleInputChange}
                       />
                     </div>
