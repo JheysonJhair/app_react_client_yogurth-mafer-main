@@ -224,15 +224,6 @@ function AppLayout() {
                     <ul className="list-unstyled p-1">
                       <li className="dropdown-item py-2">
                         <a
-                          href="pages/general/profile.html"
-                          className="text-body ms-0"
-                        >
-                          <i className="me-2 icon-md" data-feather="user" />
-                          <span>Perfil</span>
-                        </a>
-                      </li>
-                      <li className="dropdown-item py-2">
-                        <a
                           onClick={handleLogout}
                           href=""
                           className="text-body ms-0"

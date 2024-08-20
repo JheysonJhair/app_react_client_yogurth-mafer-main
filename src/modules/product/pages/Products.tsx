@@ -99,6 +99,7 @@ const Products: React.FC = () => {
       );
       formData.append("Price", currentProduct.Price.toString());
       formData.append("Stock", currentProduct.Stock.toString());
+      formData.append("Category", currentProduct.Category.toString());
 
       let imageFile;
       if (file) {
@@ -135,7 +136,9 @@ const Products: React.FC = () => {
   };
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     if (currentProduct) {
       setCurrentProduct({
@@ -307,7 +310,7 @@ const Products: React.FC = () => {
                           alt="Vista previa"
                           style={{
                             width: "100%",
-                            maxHeight: "200px",
+                            maxHeight: "180px",
                             objectFit: "contain",
                           }}
                         />
@@ -320,6 +323,26 @@ const Products: React.FC = () => {
                       type="file"
                       onChange={handleFileChange}
                     />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="category" className="form-label">
+                      Categoría
+                    </label>
+                    <select
+                      className="form-select"
+                      name="Category" // Cambia 'category' a 'Category'
+                      id="category"
+                      value={currentProduct.Category}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled>
+                        Selecciona una categoría
+                      </option>
+                      <option value="5 estrellas">Excelente</option>
+                      <option value="4 estrellas">Bueno</option>
+                      <option value="2 estrellas">Regular</option>
+                      <option value="0 estrellas">Bajo</option>
+                    </select>
                   </div>
                 </div>
               </div>

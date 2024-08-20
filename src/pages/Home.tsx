@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import * as XLSX from "xlsx";
+
 import { ApexOptions } from "apexcharts";
 import { FaCalendarAlt } from "react-icons/fa";
 
@@ -56,17 +58,27 @@ export function HomePage() {
         type: "line",
       },
       xaxis: {
-        categories: salesData.map((item) => {
-          const [year, month] = item.SaleDate.split("-");
-          const date = new Date(parseInt(year), parseInt(month) - 1, 1);
-          return date.toLocaleString("default", { month: "long" });
-        }),
+        categories: [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ],
       },
       legend: {
         position: "top",
       },
     } as ApexOptions,
   };
+
   //---------------------------------------------------------------- FILTER - POST SALES DATE RANGE
   const handleFilter = async () => {
     try {
@@ -75,6 +87,15 @@ export function HomePage() {
     } catch (error) {
       console.error("Error fetching sales data:", error);
     }
+  };
+
+  //----------------------------------------- EXPORT EXCEL
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(salesData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Ventas");
+
+    XLSX.writeFile(workbook, "ventas_filtradas.xlsx");
   };
 
   return (
@@ -237,6 +258,13 @@ export function HomePage() {
           <div className="card">
             <div className="card-body">
               <h6 className="card-title">Ventas</h6>
+              <button
+                type="button"
+                className="btn btn-success btn-icon-text mb-2 mb-md-0"
+                onClick={exportToExcel}
+              >
+                Exportar a Excel
+              </button>
 
               <div className="table-responsive">
                 <table className="table table-striped">

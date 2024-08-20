@@ -207,8 +207,10 @@ const NewProduct: React.FC = () => {
                     <option value="" disabled>
                       Selecciona una categoría
                     </option>
-                    <option value="Yogurt">Yogurt</option>
-                    <option value="Mermelada">Mermelada</option>
+                    <option value="5 estrellas">Excelente</option>
+                    <option value="4 estrellas">Bueno</option>
+                    <option value="2 estrellas">Regular</option>
+                    <option value="0 estrellas">Bajo</option>
                   </select>
                   {errors.category && (
                     <div className="text-danger mt-1">{errors.category}</div>
