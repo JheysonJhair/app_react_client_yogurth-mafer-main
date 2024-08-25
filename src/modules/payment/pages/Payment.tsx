@@ -17,6 +17,7 @@ const Payment: React.FC = () => {
         const sales = await fetchSales();
         const izipay = sales.filter((sale) => sale.PaymentMethod);
         const yape = sales.filter((sale) => !sale.PaymentMethod);
+        console.log(izipayPayments);
         setIzipayPayments(izipay);
         setYapePayments(yape);
       } catch (error) {
@@ -55,6 +56,8 @@ const Payment: React.FC = () => {
               <thead>
                 <tr>
                   <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Email</th>
                   <th>Método de compra</th>
                   <th>Método de pago</th>
                   <th>Monto</th>
@@ -65,6 +68,10 @@ const Payment: React.FC = () => {
                 {izipayPayments.map((payment) => (
                   <tr key={payment.IdSales}>
                     <td>{payment.SaleDate}</td>
+                    <td>
+                      {payment.Client.FirstName + " " + payment.Client.LastName}
+                    </td>
+                    <td>{payment.Client.Mail}</td>
                     <td>
                       {payment.ShippingMethod ? "Recojo en tienda" : "Envio"}
                     </td>
@@ -90,6 +97,8 @@ const Payment: React.FC = () => {
               <thead>
                 <tr>
                   <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Email</th>
                   <th>Método de compra</th>
                   <th>Método de pago</th>
 
@@ -102,6 +111,10 @@ const Payment: React.FC = () => {
                 {yapePayments.map((payment) => (
                   <tr key={payment.IdSales}>
                     <td>{payment.SaleDate}</td>
+                    <td>
+                      {payment.Client.FirstName + " " + payment.Client.LastName}
+                    </td>
+                    <td>{payment.Client.Mail}</td>
                     <td>
                       {payment.ShippingMethod ? "Recojo en tienda" : "Envio"}
                     </td>

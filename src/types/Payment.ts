@@ -9,4 +9,5 @@ export interface SalePayment {
   Total: number;
   idShipment: number;
   ImagePayment: string;
+  Client:any;
 }
