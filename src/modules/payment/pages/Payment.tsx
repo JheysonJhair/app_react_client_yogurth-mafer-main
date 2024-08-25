@@ -15,8 +15,8 @@ const Payment: React.FC = () => {
     const fetchData = async () => {
       try {
         const sales = await fetchSales();
-        const izipay = sales.filter((sale) => !sale.PaymentMethod);
-        const yape = sales.filter((sale) => sale.PaymentMethod);
+        const izipay = sales.filter((sale) => sale.PaymentMethod);
+        const yape = sales.filter((sale) => !sale.PaymentMethod);
         setIzipayPayments(izipay);
         setYapePayments(yape);
       } catch (error) {
